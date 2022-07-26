@@ -7,6 +7,7 @@ HEADERS += \
     $$PWD/DataDecorator.h \
     $$PWD/StringDecorator.h \
     $$PWD/IntDecorator.h \
+    $$PWD/BoolDecorator.h  \
     $$PWD/DateTimeDecorator.h \
     $$PWD/EnumeratorDecorator.h \
     $$PWD/Entity.h \
@@ -16,6 +17,7 @@ SOURCES += \
     $$PWD/DataDecorator.cpp \
     $$PWD/StringDecorator.cpp \
     $$PWD/IntDecorator.cpp \
+    $$PWD/BoolDecorator.cpp \
     $$PWD/DateTimeDecorator.cpp \
     $$PWD/EnumeratorDecorator.cpp \
     $$PWD/Entity.cpp \
