@@ -1,0 +1,2 @@
+# JsonAuto
+JsonAuto for QT
