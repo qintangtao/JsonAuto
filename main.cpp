@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     //将json结构转换成一个数据类
 #if  1
-    QString json = "{\"address\":[{\"building\":\"6号楼\",\"city\":\"西河市\",\"postcode\":\"56789\",\"street\":\"细节街道\"}],\"age\":23,\"defaultAddress\":{\"building\":\"6号楼\",\"city\":\"北京市\",\"postcode\":\"56788\",\"street\":\"光明街道\"},\"name\":\"小明\"}";
+    QString json = "{\"date\":\"2022-07-26T21:50:49\", \"distance\":128.5,\"valide\":true, \"address\":[{\"building\":\"6号楼\",\"city\":\"西河市\",\"postcode\":\"56789\",\"street\":\"细节街道\"}],\"age\":23,\"defaultAddress\":{\"building\":\"6号楼\",\"city\":\"北京市\",\"postcode\":\"56788\",\"street\":\"光明街道\"},\"name\":\"小明\"}";
     QJsonParseError json_error;
     QJsonDocument parse_doucment = QJsonDocument::fromJson(json.toLocal8Bit(), &json_error);
     if(json_error.error != QJsonParseError::NoError) {
@@ -42,6 +42,9 @@ int main(int argc, char *argv[])
     }
 
     //修改数据
+    customer->valide->setValue(false);
+    customer->distance->setValue(22.9);
+    customer->date->setValue(QDateTime::currentDateTime());
     customer->name->setValue("小明");
     customer->age->setValue(23);
     customer->defaultAddr->city->setValue("北京市");

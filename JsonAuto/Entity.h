@@ -4,8 +4,10 @@
 #include <QObject>
 #include "DataDecorator.h"
 #include "IntDecorator.h"
+#include "DoubleDecorator.h"
 #include "StringDecorator.h"
 #include "BoolDecorator.h"
+#include "DateTimeDecorator.h"
 #include "EntityCollection.h"
 
 #define ADD_DATAITEM(decorator, key, label) \
@@ -17,8 +19,14 @@
 #define ADD_INT_DATAITEM( key, label) \
                 ADD_DATAITEM(IntDecorator, key, label)
 
+#define ADD_DOUBLE_DATAITEM( key, label) \
+                ADD_DATAITEM(DoubleDecorator, key, label)
+
 #define ADD_BOOL_DATAITEM( key, label) \
                 ADD_DATAITEM(BoolDecorator, key, label)
+
+#define ADD_DATETIME_DATAITEM( key, label) \
+                ADD_DATAITEM(DateTimeDecorator, key, label)
 
 #define ADD_CHILD(cls, key) \
                 static_cast<cls*>(addChild(new cls(this), key));

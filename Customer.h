@@ -4,9 +4,6 @@
 #include "Entity.h"
 #include "EntityCollection.h"
 
-#include "IntDecorator.h"
-#include "StringDecorator.h"
-
 #include "Address.h"
 
 class Customer : public Entity
@@ -16,6 +13,9 @@ public:
     explicit Customer(QObject* parent = nullptr);
     Customer(QObject* parent, const QJsonObject& json);
 
+    BoolDecorator* valide{nullptr};
+    DoubleDecorator* distance{nullptr};
+    DateTimeDecorator *date{nullptr};
     IntDecorator* age{nullptr};       //年龄
     StringDecorator* name{nullptr};   //姓名
     Address* defaultAddr{nullptr};    //默认地址
