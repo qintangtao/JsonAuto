@@ -13,15 +13,28 @@ public:
     explicit Customer(QObject* parent = nullptr);
     Customer(QObject* parent, const QJsonObject& json);
 
-    BoolDecorator* valide{nullptr};
-    DoubleDecorator* distance{nullptr};
-    DateTimeDecorator *date{nullptr};
-    IntDecorator* age{nullptr};       //年龄
-    StringDecorator* name{nullptr};   //姓名
-    Address* defaultAddr{nullptr};    //默认地址
-    EntityCollection<Address>* addresses{nullptr}; //地址列表
+    BOOLGDECORATOR_METHOD(m_valide, setValide, valide)
+    DOUBLEGDECORATOR_METHOD(m_distance, setDistance, distance)
+    DATETIMEGDECORATOR_METHOD(m_date, setDate, date)
+    INTGDECORATOR_METHOD(m_age, setAge, age)
+    STRINGDECORATOR_METHOD(m_name, setName, name)
+
+    inline Address* defaultAddr() const
+    { return m_defaultAddr; }
+
+    inline EntityCollection<Address>* addresses() const
+    { return m_addresses; }
 
     QString toString() const;
+
+private:
+    BoolDecorator* m_valide;
+    DoubleDecorator* m_distance;
+    DateTimeDecorator *m_date;
+    IntDecorator* m_age;       //年龄
+    StringDecorator* m_name;   //姓名
+    Address* m_defaultAddr;    //默认地址
+    EntityCollection<Address>* m_addresses; //地址列表
 };
 
 #endif // CUSTOMER_H

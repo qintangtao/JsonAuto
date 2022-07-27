@@ -16,7 +16,23 @@ int main(int argc, char *argv[])
 
     //将json结构转换成一个数据类
 #if  1
-    QString json = "{\"date\":\"2022-07-26T21:50:49\", \"distance\":128.5,\"valide\":true, \"address\":[{\"building\":\"6号楼\",\"city\":\"西河市\",\"postcode\":\"56789\",\"street\":\"细节街道\"}],\"age\":23,\"defaultAddress\":{\"building\":\"6号楼\",\"city\":\"北京市\",\"postcode\":\"56788\",\"street\":\"光明街道\"},\"name\":\"小明\"}";
+    QString json = "{\"date\":\"2022-07-26T21:50:49\",\
+                              \"distance\":128.5,\
+                              \"valide\":true, \
+                             \"age\":23, \
+                             \"name\":\"小明\", \
+                             \"address\":[\
+                                    {\"building\":\"5号楼\",\
+                                    \"city\":\"西河市\",\
+                                    \"postcode\":\"56789\",\
+                                    \"street\":\"细节街道\"}\
+                            ],\
+                            \"defaultAddress\":{ \
+                                    \"building\":\"6号楼\",\
+                                    \"city\":\"北京市\",\
+                                    \"postcode\":\"56788\",\
+                                    \"street\":\"光明街道\"}\
+                        }";
     QJsonParseError json_error;
     QJsonDocument parse_doucment = QJsonDocument::fromJson(json.toLocal8Bit(), &json_error);
     if(json_error.error != QJsonParseError::NoError) {
@@ -34,31 +50,46 @@ int main(int argc, char *argv[])
     Customer* customer = new Customer(NULL, customer_json);
 
     qDebug() << customer->toString() ;
-    qDebug() << customer->defaultAddr->toString() ;
-    QList<Address*>& lstAddress = customer->addresses->derivedEntities();
+    qDebug() << customer->defaultAddr()->toString() ;
+    QList<Address*>& lstAddress = customer->addresses()->derivedEntities();
     foreach(Address* address, lstAddress)
     {
-        qDebug() << customer->defaultAddr->toString() ;
+        qDebug() << address->toString() ;
     }
 
     //修改数据
-    customer->valide->setValue(false);
-    customer->distance->setValue(22.9);
-    customer->date->setValue(QDateTime::currentDateTime());
-    customer->name->setValue("小明");
-    customer->age->setValue(23);
+    customer->setValide(false);
+    customer->setDistance(22.9);
+    customer->setDate(QDateTime::currentDateTime());
+    customer->setName("小明");
+    customer->setAge(23);
+
+#if 1
+    customer->defaultAddr()->setCity("北京市");
+    customer->defaultAddr()->setStreet("光明街道");
+    customer->defaultAddr()->setBuilding("6号楼");
+    customer->defaultAddr()->setPostcode("56788");
+#else
     customer->defaultAddr->city->setValue("北京市");
     customer->defaultAddr->street->setValue("光明街道");
     customer->defaultAddr->building->setValue("6号楼");
     customer->defaultAddr->postcode->setValue("56788");
+#endif
 
     //添加新地址
     Address* new_addr = new Address();
+#if 1
+    new_addr->setCity("北京市");
+    new_addr->setStreet("光明街道");
+    new_addr->setBuilding("6号楼");
+    new_addr->setPostcode("56788");
+#else
     new_addr->city->setValue("西河市");
     new_addr->street->setValue("细节街道");
     new_addr->building->setValue("6号楼");
     new_addr->postcode->setValue("56789");
-    customer->addresses->addEntity(new_addr);
+#endif
+    customer->addresses()->addEntity(new_addr);
 
     //将数据类型转换成json数据结构
     QJsonObject json_object = customer->toJson();
