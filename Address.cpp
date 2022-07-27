@@ -4,11 +4,10 @@ Address::Address(QObject* parent)
         : Entity(parent, "address")
 {
 #if 1
-    m_building = ADD_STRING_DATAITEM("building", "Building");
-    m_building = ADD_STRING_DATAITEM("building", "Building");
-    m_street = ADD_STRING_DATAITEM("street", "Street");
-    m_city = ADD_STRING_DATAITEM( "city", "City");
-    m_postcode = ADD_STRING_DATAITEM("postcode", "Post Code");
+    m_building = ADD_STRING_DATAITEM("building", QObject::tr("楼栋"));
+    m_street = ADD_STRING_DATAITEM("street", QObject::tr("街道"));
+    m_city = ADD_STRING_DATAITEM( "city", QObject::tr("城市"));
+    m_postcode = ADD_STRING_DATAITEM("postcode", QObject::tr("编码"));
 #else
     building = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "building", "Building")));
     street = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "street", "Street")));
@@ -25,8 +24,8 @@ Address::Address(QObject* parent, const QJsonObject& json)
 
 QString Address::toString() const
 {
-    return QString("%1=%2").arg(m_building->key()).arg(m_building->value()) + ", " +
-               QString("%1=%2").arg(m_street->key()).arg(m_street->value()) + ", " +
-               QString("%1=%2").arg(m_city->key()).arg(m_city->value()) + ", " +
-               QString("%1=%2").arg(m_postcode->key()).arg(m_postcode->value())  ;
+    return QString("%1=%2").arg(m_building->label()).arg(m_building->value()) + ", " +
+               QString("%1=%2").arg(m_street->label()).arg(m_street->value()) + ", " +
+               QString("%1=%2").arg(m_city->label()).arg(m_city->value()) + ", " +
+               QString("%1=%2").arg(m_postcode->label()).arg(m_postcode->value())  ;
 }
