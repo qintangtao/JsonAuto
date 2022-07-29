@@ -4,13 +4,13 @@
 class IntDecorator::Implementation
 {
 public:
-    Implementation(IntDecorator* intDecorator, int value)
-        : intDecorator(intDecorator)
-        , value(value)
+    Implementation(IntDecorator* _decorator, int _value)
+        : decorator(_decorator)
+        , value(_value)
     {
     }
 
-    IntDecorator* intDecorator{nullptr};
+    IntDecorator* decorator{nullptr};
     int value;
 };
 

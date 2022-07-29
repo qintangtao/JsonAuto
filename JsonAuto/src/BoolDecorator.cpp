@@ -4,13 +4,13 @@
 class BoolDecorator::Implementation
 {
 public:
-    Implementation(BoolDecorator* BoolDecorator, bool value)
-        : BoolDecorator(BoolDecorator)
-        , value(value)
+    Implementation(BoolDecorator* _decorator, bool _value)
+        : decorator(_decorator)
+        , value(_value)
     {
     }
 
-    BoolDecorator* BoolDecorator{nullptr};
+    BoolDecorator* decorator{nullptr};
     bool value;
 };
 

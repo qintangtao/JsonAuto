@@ -4,14 +4,14 @@
 class EnumeratorDecorator::Implementation
 {
 public:
-    Implementation(EnumeratorDecorator* enumeratorDecorator, int value, const std::map<int, QString>& descriptionMapper)
-        : enumeratorDecorator(enumeratorDecorator)
-        , value(value)
-        , descriptionMapper(descriptionMapper)
+    Implementation(EnumeratorDecorator* _decorator, int _value, const std::map<int, QString>& _descriptionMapper)
+        : decorator(_decorator)
+        , value(_value)
+        , descriptionMapper(_descriptionMapper)
     {
     }
 
-    EnumeratorDecorator* enumeratorDecorator{nullptr};
+    EnumeratorDecorator* decorator{nullptr};
     int value;
     std::map<int, QString> descriptionMapper;
 };

@@ -4,13 +4,13 @@
 class StringDecorator::Implementation
 {
 public:
-    Implementation(StringDecorator* _stringDecorator, const QString& _value)
-        : stringDecorator(_stringDecorator)
+    Implementation(StringDecorator* _decorator, const QString& _value)
+        : decorator(_decorator)
         , value(_value)
     {
     }
 
-    StringDecorator* stringDecorator{nullptr};
+    StringDecorator* decorator{nullptr};
     QString value;
 };
 

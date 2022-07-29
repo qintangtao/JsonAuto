@@ -4,12 +4,12 @@
 class DateTimeDecorator::Implementation
 {
 public:
-    Implementation(DateTimeDecorator* dateTimeDecorator, const QDateTime& value)
-        : dateTimeDecorator(dateTimeDecorator)
-        , value(value)
+    Implementation(DateTimeDecorator* _decorator, const QDateTime& _value)
+        : decorator(_decorator)
+        , value(_value)
     {
     }
-    DateTimeDecorator* dateTimeDecorator{nullptr};
+    DateTimeDecorator* decorator{nullptr};
     QDateTime value;
 };
 

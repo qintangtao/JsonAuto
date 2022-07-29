@@ -4,13 +4,13 @@
 class DoubleDecorator::Implementation
 {
 public:
-    Implementation(DoubleDecorator* DoubleDecorator, double value)
-        : DoubleDecorator(DoubleDecorator)
-        , value(value)
+    Implementation(DoubleDecorator* _decorator, double _value)
+        : decorator(_decorator)
+        , value(_value)
     {
     }
 
-    DoubleDecorator* DoubleDecorator{nullptr};
+    DoubleDecorator* decorator{nullptr};
     double value;
 };
 
