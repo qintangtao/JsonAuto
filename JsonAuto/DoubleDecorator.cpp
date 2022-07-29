@@ -17,19 +17,19 @@ public:
 DoubleDecorator::DoubleDecorator(Entity* parentEntity, const QString& key, const QString& label, double value)
     :  DataDecorator(parentEntity, key, label)  
 {
-    implementation.reset(new Implementation(this, value));
+    m_implementation.reset(new Implementation(this, value));
 }
 
 double DoubleDecorator::value() const
 {
-    return implementation->value;
+    return m_implementation->value;
 }
 
 DoubleDecorator& DoubleDecorator::setValue(double value)
 {
-    if(value != implementation->value) {
+    if(value != m_implementation->value) {
         // ...Validation here if required...
-        implementation->value = value;
+        m_implementation->value = value;
         emit valueChanged();
     }
 
@@ -38,7 +38,7 @@ DoubleDecorator& DoubleDecorator::setValue(double value)
 
 QJsonValue DoubleDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_implementation->value));
 }
 
 void DoubleDecorator::update(const QJsonObject& jsonObject)
@@ -48,4 +48,9 @@ void DoubleDecorator::update(const QJsonObject& jsonObject)
     } else {
         setValue(0.0f);
     }
+}
+
+void DoubleDecorator::update(const QJsonValue& jsonValue)
+{
+    setValue( jsonValue.toDouble());
 }

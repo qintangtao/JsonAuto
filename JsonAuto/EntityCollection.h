@@ -1,54 +1,40 @@
 #ifndef ENTITYCOLLECTION_H
 #define ENTITYCOLLECTION_H
 
-#include <QObject>
+#include "CollectionObject.h"
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QJsonObject>
 
 class Entity;
 
-//基类声明集合变化的信号
-class EntityCollectionObject : public QObject
-{
-    Q_OBJECT
-
-public:
-    EntityCollectionObject(QObject* _parent = nullptr) : QObject(_parent) {}
-    virtual ~EntityCollectionObject() {}
-
-signals:
-    void collectionChanged();
-};
-
 //数据信息集合的基类
-class EntityCollectionBase : public EntityCollectionObject
+class EntityCollectionBase : public CollectionObject
 {
 public:
     EntityCollectionBase(QObject* parent = nullptr, const QString& key = "SomeCollectionKey")
-        : EntityCollectionObject(parent)
-        , key(key)
+        : CollectionObject(parent)
+        , m_key(key)
     {}
 
     virtual ~EntityCollectionBase()
     {}
 
-    inline QString getKey() const
-    { return key; }
+    inline QString key() const
+    { return m_key; }
 
     virtual void clear() = 0;
-    //json数组转成数据实体
     virtual void update(const QJsonArray& json) = 0;
-    virtual std::vector<Entity*> baseEntities() = 0;
+    virtual std::vector<Entity*> baseDatas() = 0;
 
     template <class T>
-    QList<T*>& derivedEntities();
+    const QList<T*>& datas() const;
 
     template <class T>
-    T* addEntity(T* entity);
+    T* addData(T* data);
 
 private:
-    QString key;
+    QString m_key;
 };
 
 //数据信息基类
@@ -66,60 +52,60 @@ public:
     //清空列表
       void clear() override
       {
-          for(auto entity : collection) {
-              entity->deleteLater();
+          for(auto data : m_collection) {
+              data->deleteLater();
           }
-          collection.clear();
+          m_collection.clear();
       }
       //更新列表
       void update(const QJsonArray& jsonArray) override
       {
           clear();
           for(const QJsonValue& jsonValue : jsonArray) {
-              addEntity(new T(this, jsonValue.toObject()));
+              addData(new T(this, jsonValue.toObject()));
           }
       }
 
       //获取列表
-      std::vector<Entity*> baseEntities() override
+      std::vector<Entity*> baseDatas() override
       {
           std::vector<Entity*> returnValue;
-          for(T* entity : collection) {
-              returnValue.push_back(entity);
+          for(T* data : m_collection) {
+              returnValue.push_back(data);
           }
           return returnValue;
       }
 
       //获取列表的引用
-      QList<T*>& derivedEntities()
+      const QList<T*>& datas() const
       {
-          return collection;
+          return m_collection;
       }
 
       //添加新的信息实体
-      T* addEntity(T* entity)
+      T* addData(T* data)
       {
-          if(!collection.contains(entity)) {
-              collection.append(entity);
-              EntityCollectionObject::collectionChanged();
+          if(!m_collection.contains(data)) {
+              m_collection.append(data);
+              CollectionObject:: collectionChanged();
           }
-          return entity;
+          return data;
       }
 
 private:
-    QList<T*> collection;
+    QList<T*> m_collection;
 };
 
 template <class T>
-QList<T*>& EntityCollectionBase::derivedEntities()
+const QList<T*>& EntityCollectionBase::datas() const
 {
-    return dynamic_cast<const EntityCollection<T>&>(*this).derivedEntities();
+    return dynamic_cast<const EntityCollection<T>&>(*this).datas();
 }
 
 template <class T>
-T* EntityCollectionBase::addEntity(T* entity)
+T* EntityCollectionBase::addData(T* data)
 {
-    return dynamic_cast<const EntityCollection<T>&>(*this).addEntity(entity);
+    return dynamic_cast<const EntityCollection<T>&>(*this).addData(data);
 }
 
 

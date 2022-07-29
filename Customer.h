@@ -2,7 +2,6 @@
 #define CUSTOMER_H
 
 #include "Entity.h"
-#include "EntityCollection.h"
 
 #include "Address.h"
 
@@ -25,6 +24,9 @@ public:
     inline EntityCollection<Address>* addresses() const
     { return m_addresses; }
 
+    inline DataDecoratorCollection<IntDecorator>* orders() const
+    { return m_orders; }
+
     QString toString() const;
 
 private:
@@ -35,6 +37,7 @@ private:
     StringDecorator* m_name;   //姓名
     Address* m_defaultAddr;    //默认地址
     EntityCollection<Address>* m_addresses; //地址列表
+    DataDecoratorCollection<IntDecorator> * m_orders;
 };
 
 #endif // CUSTOMER_H

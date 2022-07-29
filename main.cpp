@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
                               \"valide\":true, \
                              \"age\":23, \
                              \"name\":\"小明\", \
+                            \"orders\":[2,4,1,8,5,9,6],\
                              \"address\":[\
                                     {\"building\":\"5号楼\",\
                                     \"city\":\"西河市\",\
@@ -51,11 +52,20 @@ int main(int argc, char *argv[])
 
     qDebug() << customer->toString() ;
     qDebug() << customer->defaultAddr()->toString() ;
-    QList<Address*>& lstAddress = customer->addresses()->derivedEntities();
-    foreach(Address* address, lstAddress)
+
+    qDebug() << "=========address=========";
+    const QList<Address*>& lstAddress = customer->addresses()->datas();
+    for(Address* address: lstAddress)
     {
         qDebug() << address->toString() ;
     }
+
+    qDebug() << "=========orders=========";
+    const QList<IntDecorator*>& lstOrders = customer->orders()->datas();
+     foreach(IntDecorator* order, lstOrders)
+     {
+         qDebug() << order->value();
+     }
 
     //修改数据
     customer->setValide(false);
@@ -89,7 +99,7 @@ int main(int argc, char *argv[])
     new_addr->building->setValue("6号楼");
     new_addr->postcode->setValue("56789");
 #endif
-    customer->addresses()->addEntity(new_addr);
+    customer->addresses()->addData(new_addr);
 
     //将数据类型转换成json数据结构
     QJsonObject json_object = customer->toJson();
@@ -110,5 +120,8 @@ int main(int argc, char *argv[])
            file.close();
        }
    }
+
+    delete customer;
+
     return a.exec();
 }

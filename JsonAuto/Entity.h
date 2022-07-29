@@ -9,6 +9,7 @@
 #include "BoolDecorator.h"
 #include "DateTimeDecorator.h"
 #include "EntityCollection.h"
+#include "DataDecoratorCollection.h"
 
 #define ADD_DATAITEM(decorator, key, label) \
                 static_cast<decorator*>(addDataItem(new decorator(this, key, label)));
@@ -31,9 +32,14 @@
 #define ADD_CHILD(cls, key) \
                 static_cast<cls*>(addChild(new cls(this), key));
 
-#define ADD_CHILD_COLLECTION(cls, key) \
-                static_cast<EntityCollection<cls>*>(addChildCollection(new EntityCollection<cls>(this, key)));
+#define ADD_CHILD_COLLECTION(cls, type, key) \
+                static_cast<cls<type>*>(addChildCollection(new cls<type>(this, key)));
 
+#define ADD_CHILD_ENTITYCOLLECTION(type, key) \
+               ADD_CHILD_COLLECTION(EntityCollection, type, key)
+
+#define ADD_CHILD_DATADECORATORCOLLECTION(type, key) \
+               ADD_CHILD_COLLECTION(DataDecoratorCollection, type, key)
 
 // method
 #define DECORATOR_SETMETHOD(PROPERTYTYPE, PROPERTYNAME, SETNAME) \
@@ -98,7 +104,6 @@
     DATETIMEGDECORATOR_GETMETHOD(PROPERTYNAME, GETNAME)
 
 
-
 class Entity : public QObject
 {
     Q_OBJECT
@@ -119,6 +124,8 @@ public:
 signals:
     //信息体集合发生变化
     void childCollectionsChanged(const QString& collectionKey);
+    //基本体集合发生变化
+    void childDecoratorCollectionsChanged(const QString& collectionKey);
     //包含的信息体发生变化
     void childEntitiesChanged();
     //包含的属性发生变化
@@ -129,11 +136,14 @@ protected:
     Entity* addChild(Entity* entity, const QString& key);
     //添加包含的信息实体列表
     EntityCollectionBase* addChildCollection(EntityCollectionBase* entityCollection);
+    // 基本类型列表
+    DataDecoratorCollectionBase* addChildCollection(DataDecoratorCollectionBase* dataCollection);
     //添加子属性
     DataDecorator* addDataItem(DataDecorator* dataDecorator);
+
 protected:
     class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> implementation;
+    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
 };
 
 #endif // ENTITY_H

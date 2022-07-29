@@ -17,18 +17,18 @@ public:
 StringDecorator::StringDecorator(Entity* parentEntity, const QString& key, const QString& label, const QString& value)
         :   DataDecorator(parentEntity, key, label)
 {
-    implementation.reset(new Implementation(this, value));
+    m_implementation.reset(new Implementation(this, value));
 }
 
 const QString& StringDecorator::value() const
 {
-    return implementation->value;
+    return m_implementation->value;
 }
 
 StringDecorator& StringDecorator::setValue(const QString& value)
 {
-    if(value != implementation->value) {
-        implementation->value = value;
+    if(value != m_implementation->value) {
+        m_implementation->value = value;
         emit valueChanged();
     }
     return *this;
@@ -36,7 +36,7 @@ StringDecorator& StringDecorator::setValue(const QString& value)
 
 QJsonValue StringDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_implementation->value));
 }
 
 void StringDecorator::update(const QJsonObject& _jsonObject)
@@ -44,4 +44,9 @@ void StringDecorator::update(const QJsonObject& _jsonObject)
     if (_jsonObject.contains(key())) {
         setValue(_jsonObject.value(key()).toString());
     }
+}
+
+void StringDecorator::update(const QJsonValue& jsonValue)
+{
+    setValue(jsonValue.toString());
 }

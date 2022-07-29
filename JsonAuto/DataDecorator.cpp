@@ -18,20 +18,20 @@ public:
 
 DataDecorator::DataDecorator(Entity*parent, const QString& key, const QString& label) : QObject((QObject*)parent)
 {
-        implementation.reset(new Implementation(parent, key, label));
+        m_implementation.reset(new Implementation(parent, key, label));
 }
 
 const QString& DataDecorator::key() const
 {
-    return implementation->key;
+    return m_implementation->key;
 }
 
 const QString& DataDecorator::label() const
 {
-    return implementation->label;
+    return m_implementation->label;
 }
 
 Entity* DataDecorator::parentEntity()
 {
-    return implementation->parentEntity;
+    return m_implementation->parentEntity;
 }

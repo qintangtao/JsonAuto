@@ -18,6 +18,7 @@ public:
 
     QJsonValue jsonValue() const override;
     void update(const QJsonObject& jsonObject) override;
+    void update(const QJsonValue& jsonValue) override;
 
 signals:
     //数据发生变化的时候发送的信号
@@ -25,7 +26,7 @@ signals:
 
 private:
     class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> implementation;
+    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
 };
 
 #endif // STRINGDECORATOR_H

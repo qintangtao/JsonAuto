@@ -1,5 +1,4 @@
 #include "Customer.h"
-#include "EntityCollection.h"
 
 Customer::Customer(QObject* parent)
     : Entity(parent, "Customer")
@@ -11,12 +10,14 @@ Customer::Customer(QObject* parent)
     m_age = ADD_INT_DATAITEM("age", QObject::tr("年龄"));
     m_name = ADD_STRING_DATAITEM("name", QObject::tr("姓名"));
     m_defaultAddr = ADD_CHILD(Address, "defaultAddress");
-    m_addresses = ADD_CHILD_COLLECTION(Address, "address");
+    m_addresses = ADD_CHILD_ENTITYCOLLECTION(Address, "address");
+    m_orders = ADD_CHILD_DATADECORATORCOLLECTION(IntDecorator, "orders")
 #else
     m_age = static_cast<IntDecorator*>(addDataItem(new IntDecorator(this, "age", "年龄")));
     m_name = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "name", "姓名")));
     m_defaultAddr = static_cast<Address*>(addChild(new Address(this), "defaultAddress"));
     m_addresses = static_cast<EntityCollection<Address>*>(addChildCollection(new EntityCollection<Address>(this, "address")));
+    m_orders = static_cast<BasicCollection<int>*>(addChildCollection(new BasicCollection<int>(this, "orders")));
 #endif
 }
 

@@ -19,18 +19,18 @@ public:
 EnumeratorDecorator::EnumeratorDecorator(Entity* parentEntity, const QString& key, const QString& label, int value, const std::map<int, QString>& descriptionMapper)
     : DataDecorator(parentEntity, key, label)
 {
-    implementation.reset(new Implementation(this, value, descriptionMapper));
+    m_implementation.reset(new Implementation(this, value, descriptionMapper));
 }
 
 int EnumeratorDecorator::value() const
 {
-    return implementation->value;
+    return m_implementation->value;
 }
 
 QString EnumeratorDecorator::valueDescription() const
 {
-    if (implementation->descriptionMapper.find(implementation->value) != implementation->descriptionMapper.end()) {
-        return implementation->descriptionMapper.at(implementation->value);
+    if (m_implementation->descriptionMapper.find(m_implementation->value) != m_implementation->descriptionMapper.end()) {
+        return m_implementation->descriptionMapper.at(m_implementation->value);
     } else {
         return {};
     }
@@ -38,9 +38,9 @@ QString EnumeratorDecorator::valueDescription() const
 
 EnumeratorDecorator& EnumeratorDecorator::setValue(int value)
 {
-    if (value != implementation->value) {
+    if (value != m_implementation->value) {
         // ...Validation here if required...
-        implementation->value = value;
+        m_implementation->value = value;
         emit valueChanged();
     }
 
@@ -49,7 +49,7 @@ EnumeratorDecorator& EnumeratorDecorator::setValue(int value)
 
 QJsonValue EnumeratorDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_implementation->value));
 }
 
 void EnumeratorDecorator::update(const QJsonObject& jsonObject)
@@ -59,4 +59,9 @@ void EnumeratorDecorator::update(const QJsonObject& jsonObject)
     } else {
         setValue(0);
     }
+}
+
+void EnumeratorDecorator::update(const QJsonValue& jsonValue)
+{
+    setValue(jsonValue.toInt());
 }

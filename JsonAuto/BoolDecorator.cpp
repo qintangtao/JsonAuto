@@ -17,19 +17,19 @@ public:
 BoolDecorator::BoolDecorator(Entity* parentEntity, const QString& key, const QString& label, bool value)
     :  DataDecorator(parentEntity, key, label)
 {
-    implementation.reset(new Implementation(this, value));
+    m_implementation.reset(new Implementation(this, value));
 }
 
 bool BoolDecorator::value() const
 {
-    return implementation->value;
+    return m_implementation->value;
 }
 
 BoolDecorator& BoolDecorator::setValue(bool value)
 {
-    if(value != implementation->value) {
+    if(value != m_implementation->value) {
         // ...Validation here if required...
-        implementation->value = value;
+        m_implementation->value = value;
         emit valueChanged();
     }
 
@@ -38,7 +38,7 @@ BoolDecorator& BoolDecorator::setValue(bool value)
 
 QJsonValue BoolDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_implementation->value));
 }
 
 void BoolDecorator::update(const QJsonObject& jsonObject)
@@ -48,4 +48,9 @@ void BoolDecorator::update(const QJsonObject& jsonObject)
     } else {
         setValue(false);
     }
+}
+
+void BoolDecorator::update(const QJsonValue& jsonValue)
+{
+    setValue( jsonValue.toBool());
 }

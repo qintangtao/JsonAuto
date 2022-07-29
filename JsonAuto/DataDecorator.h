@@ -7,6 +7,7 @@
 #include <QScopedPointer>
 
 class Entity;
+class DataDecoratorCollectionBase;
 
 template <typename T>
 struct QScopedPointerDeleter2
@@ -32,11 +33,12 @@ public:
     //Json和数据类之间的相互转化
     virtual QJsonValue jsonValue() const = 0;
     virtual void update(const QJsonObject& jsonObject) = 0;
+    virtual void update(const QJsonValue& jsonValue) = 0;
 
 private:
     //私有的数据类
     class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> implementation;
+    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
 };
 
 #endif // DATADECORATOR_H

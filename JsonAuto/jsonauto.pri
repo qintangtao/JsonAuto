@@ -12,7 +12,9 @@ HEADERS += \
     $$PWD/DateTimeDecorator.h \
     $$PWD/EnumeratorDecorator.h \
     $$PWD/Entity.h \
-    $$PWD/EntityCollection.h
+    $$PWD/EntityCollection.h \
+    $$PWD/CollectionObject.h \
+    $$PWD/DataDecoratorCollection.h
 
 SOURCES += \
     $$PWD/DataDecorator.cpp \
@@ -22,7 +24,6 @@ SOURCES += \
     $$PWD/BoolDecorator.cpp \
     $$PWD/DateTimeDecorator.cpp \
     $$PWD/EnumeratorDecorator.cpp \
-    $$PWD/Entity.cpp \
-    $$PWD/EntityCollection.cpp
+    $$PWD/Entity.cpp
 
 QT += core
