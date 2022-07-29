@@ -3,13 +3,16 @@
 
 #include "DataDecorator.h"
 
+class IntDecoratorPrivate;
+
 class JSONAUTOSHARED_EXPORT  IntDecorator : public DataDecorator
 {
     Q_OBJECT
     // QML访问的接口
     Q_PROPERTY( int ui_value READ value WRITE setValue NOTIFY valueChanged )
 public:
-    IntDecorator(Entity* parentEntity, const QString& key, const QString& label = "", int value = 0);
+    explicit IntDecorator(Entity* parentEntity, const QString& key, const QString& label = "", int value = 0);
+    ~IntDecorator();
 
     //修改和获取字符串封装类型中的原始数据
     IntDecorator& setValue(int value);
@@ -24,8 +27,7 @@ signals:
     void valueChanged();
 
 private:
-    class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
+    IntDecoratorPrivate *m_d;
 };
 
 #endif // INTDECORATOR_H

@@ -3,8 +3,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-
-
 QString EntitytoJson(Entity *entity)
 {
     QJsonDocument document;
@@ -16,10 +14,10 @@ QString EntitytoJson(Entity *entity)
     return QString::fromLocal8Bit( document.toJson(QJsonDocument::Compact) );
 }
 
-class Entity::Implementation
+class EntityPrivate
 {
 public:
-    Implementation(Entity* _entity, const QString& _key)
+    EntityPrivate(Entity* _entity, const QString& _key)
         : entity(_entity)
         , key(_key)
     {
@@ -34,8 +32,9 @@ public:
 
 Entity::Entity(QObject* parent, const QString& key)
     : QObject(parent)
+    , m_d(new EntityPrivate(this, key))
 {
-    m_implementation.reset(new Implementation(this, key));
+
 }
 
 Entity::Entity(QObject* parent, const QString& key, const QJsonObject& jsonObject)
@@ -46,16 +45,19 @@ Entity::Entity(QObject* parent, const QString& key, const QJsonObject& jsonObjec
 
 Entity::~Entity()
 {
+    if (m_d)
+        delete m_d;
 }
+
 const QString& Entity::key() const
 {
-    return m_implementation->key;
+    return m_d->key;
 }
 
 Entity* Entity::addChild(Entity* entity, const QString& key)
 {
-    if(m_implementation->childEntities.find(key) == std::end(m_implementation->childEntities)) {
-        m_implementation->childEntities[key] = entity;
+    if(m_d->childEntities.find(key) == std::end(m_d->childEntities)) {
+        m_d->childEntities[key] = entity;
         emit childEntitiesChanged();
     }
 
@@ -64,8 +66,8 @@ Entity* Entity::addChild(Entity* entity, const QString& key)
 
 EntityCollectionBase* Entity::addChildCollection(EntityCollectionBase* entityCollection)
 {
-    if(m_implementation->childEntityCollections.find(entityCollection->key()) == std::end(m_implementation->childEntityCollections)) {
-        m_implementation->childEntityCollections[entityCollection->key()] = entityCollection;
+    if(m_d->childEntityCollections.find(entityCollection->key()) == std::end(m_d->childEntityCollections)) {
+        m_d->childEntityCollections[entityCollection->key()] = entityCollection;
         emit childCollectionsChanged(entityCollection->key());
     }
 
@@ -74,8 +76,8 @@ EntityCollectionBase* Entity::addChildCollection(EntityCollectionBase* entityCol
 
 DataDecoratorCollectionBase* Entity::addChildCollection(DataDecoratorCollectionBase* decoratorCollection)
 {
-    if(m_implementation->childDecoratorCollections.find(decoratorCollection->key()) == std::end(m_implementation->childDecoratorCollections)) {
-        m_implementation->childDecoratorCollections[decoratorCollection->key()] = decoratorCollection;
+    if(m_d->childDecoratorCollections.find(decoratorCollection->key()) == std::end(m_d->childDecoratorCollections)) {
+        m_d->childDecoratorCollections[decoratorCollection->key()] = decoratorCollection;
         emit childDecoratorCollectionsChanged(decoratorCollection->key());
     }
 
@@ -84,8 +86,8 @@ DataDecoratorCollectionBase* Entity::addChildCollection(DataDecoratorCollectionB
 
 DataDecorator* Entity::addDataItem(DataDecorator* dataDecorator)
 {
-    if(m_implementation->dataDecorators.find(dataDecorator->key()) == std::end(m_implementation->dataDecorators)) {
-        m_implementation->dataDecorators[dataDecorator->key()] = dataDecorator;
+    if(m_d->dataDecorators.find(dataDecorator->key()) == std::end(m_d->dataDecorators)) {
+        m_d->dataDecorators[dataDecorator->key()] = dataDecorator;
         emit dataDecoratorsChanged();
     }
     return dataDecorator;
@@ -94,22 +96,22 @@ DataDecorator* Entity::addDataItem(DataDecorator* dataDecorator)
 void Entity::update(const QJsonObject& jsonObject)
 {
     // Update data decorators
-    for (std::pair<QString, DataDecorator*> dataDecoratorPair : m_implementation->dataDecorators) {
+    for (std::pair<QString, DataDecorator*> dataDecoratorPair : m_d->dataDecorators) {
         dataDecoratorPair.second->update(jsonObject);
     }
 
     // Update child entities
-    for (std::pair<QString, Entity*> childEntityPair : m_implementation->childEntities) {
+    for (std::pair<QString, Entity*> childEntityPair : m_d->childEntities) {
         childEntityPair.second->update(jsonObject.value(childEntityPair.first).toObject());
     }
 
     // Update child decorator collections
-    for (std::pair<QString, DataDecoratorCollectionBase*> childCollectionPair : m_implementation->childDecoratorCollections) {
+    for (std::pair<QString, DataDecoratorCollectionBase*> childCollectionPair : m_d->childDecoratorCollections) {
         childCollectionPair.second->update(jsonObject.value(childCollectionPair.first).toArray());
     }
 
     // Update child entity collections
-    for (std::pair<QString, EntityCollectionBase*> childCollectionPair : m_implementation->childEntityCollections) {
+    for (std::pair<QString, EntityCollectionBase*> childCollectionPair : m_d->childEntityCollections) {
         childCollectionPair.second->update(jsonObject.value(childCollectionPair.first).toArray());
     }
 }
@@ -119,17 +121,17 @@ QJsonObject Entity::toJson() const
     QJsonObject returnValue;
 
     // Add data decorators
-    for (std::pair<QString, DataDecorator*> dataDecoratorPair : m_implementation->dataDecorators) {
+    for (std::pair<QString, DataDecorator*> dataDecoratorPair : m_d->dataDecorators) {
         returnValue.insert( dataDecoratorPair.first, dataDecoratorPair.second->jsonValue() );
     }
 
     // Add child entities
-    for (std::pair<QString, Entity*> childEntityPair : m_implementation->childEntities) {
+    for (std::pair<QString, Entity*> childEntityPair : m_d->childEntities) {
         returnValue.insert( childEntityPair.first, childEntityPair.second->toJson() );
     }
 
     // Add child decorator collections
-    for (std::pair<QString, DataDecoratorCollectionBase*> childCollectionPair : m_implementation->childDecoratorCollections) {
+    for (std::pair<QString, DataDecoratorCollectionBase*> childCollectionPair : m_d->childDecoratorCollections) {
         QJsonArray entityArray;
         for (DataDecorator* decorator : childCollectionPair.second->baseDatas()) {
             entityArray.append( decorator->jsonValue() );
@@ -138,7 +140,7 @@ QJsonObject Entity::toJson() const
     }
 
     // Add child entity collections
-    for (std::pair<QString, EntityCollectionBase*> childCollectionPair : m_implementation->childEntityCollections) {
+    for (std::pair<QString, EntityCollectionBase*> childCollectionPair : m_d->childEntityCollections) {
         QJsonArray entityArray;
         for (Entity* entity : childCollectionPair.second->baseDatas()) {
             entityArray.append( entity->toJson() );

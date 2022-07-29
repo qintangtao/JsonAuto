@@ -4,6 +4,8 @@
 #include <map>
 #include "DataDecorator.h"
 
+class EnumeratorDecoratorPrivate;
+
 class JSONAUTOSHARED_EXPORT EnumeratorDecorator : public DataDecorator
 {
      Q_OBJECT
@@ -13,7 +15,8 @@ class JSONAUTOSHARED_EXPORT EnumeratorDecorator : public DataDecorator
     Q_PROPERTY( QString ui_valueDescription READ valueDescription NOTIFY valueChanged )
 
 public:
-    EnumeratorDecorator(Entity* parentEntity, const QString& key, const QString& label = "", int value = 0, const std::map<int, QString>& descriptionMapper = std::map<int, QString>());
+    explicit EnumeratorDecorator(Entity* parentEntity, const QString& key, const QString& label = "", int value = 0, const std::map<int, QString>& descriptionMapper = std::map<int, QString>());
+    ~EnumeratorDecorator();
 
     //获取属性对应的值和描述
     EnumeratorDecorator& setValue(int value);
@@ -28,8 +31,7 @@ signals:
     void valueChanged();
 
 private:
-    class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
+    EnumeratorDecoratorPrivate *m_d;
 };
 
 #endif // ENUMERATORDECORATOR_H

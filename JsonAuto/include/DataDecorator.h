@@ -4,20 +4,10 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QScopedPointer>
 #include "JsonAuto.h"
 
 class Entity;
-class DataDecoratorCollectionBase;
-
-template <typename T>
-struct QScopedPointerDeleter2
-{
-    static inline void cleanup(T *pointer)
-    {
-        delete pointer;
-    }
-};
+class DataDecoratorPrivate;
 
 class JSONAUTOSHARED_EXPORT DataDecorator : public QObject
 {
@@ -26,6 +16,7 @@ class JSONAUTOSHARED_EXPORT DataDecorator : public QObject
     Q_PROPERTY( QString ui_describe READ label CONSTANT )
 public:
     explicit DataDecorator(Entity *parent, const QString& key, const QString& label = "");
+    ~DataDecorator();
 
     const QString& key() const;   //key值用来查找该属性
     const QString& label() const; //label用来描述该属性字段
@@ -37,9 +28,7 @@ public:
     virtual void update(const QJsonValue& jsonValue) = 0;
 
 private:
-    //私有的数据类
-    class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
+    DataDecoratorPrivate *m_d;
 };
 
 #endif // DATADECORATOR_H

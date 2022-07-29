@@ -1,10 +1,10 @@
 #include "EnumeratorDecorator.h"
 #include <QVariant>
 
-class EnumeratorDecorator::Implementation
+class EnumeratorDecoratorPrivate
 {
 public:
-    Implementation(EnumeratorDecorator* _decorator, int _value, const std::map<int, QString>& _descriptionMapper)
+    EnumeratorDecoratorPrivate(EnumeratorDecorator* _decorator, int _value, const std::map<int, QString>& _descriptionMapper)
         : decorator(_decorator)
         , value(_value)
         , descriptionMapper(_descriptionMapper)
@@ -18,19 +18,26 @@ public:
 
 EnumeratorDecorator::EnumeratorDecorator(Entity* parentEntity, const QString& key, const QString& label, int value, const std::map<int, QString>& descriptionMapper)
     : DataDecorator(parentEntity, key, label)
+    , m_d(new EnumeratorDecoratorPrivate(this, value, descriptionMapper))
 {
-    m_implementation.reset(new Implementation(this, value, descriptionMapper));
+
+}
+
+EnumeratorDecorator::~EnumeratorDecorator()
+{
+    if (m_d)
+        delete m_d;
 }
 
 int EnumeratorDecorator::value() const
 {
-    return m_implementation->value;
+    return m_d->value;
 }
 
 QString EnumeratorDecorator::valueDescription() const
 {
-    if (m_implementation->descriptionMapper.find(m_implementation->value) != m_implementation->descriptionMapper.end()) {
-        return m_implementation->descriptionMapper.at(m_implementation->value);
+    if (m_d->descriptionMapper.find(m_d->value) != m_d->descriptionMapper.end()) {
+        return m_d->descriptionMapper.at(m_d->value);
     } else {
         return {};
     }
@@ -38,9 +45,9 @@ QString EnumeratorDecorator::valueDescription() const
 
 EnumeratorDecorator& EnumeratorDecorator::setValue(int value)
 {
-    if (value != m_implementation->value) {
+    if (value != m_d->value) {
         // ...Validation here if required...
-        m_implementation->value = value;
+        m_d->value = value;
         emit valueChanged();
     }
 
@@ -49,7 +56,7 @@ EnumeratorDecorator& EnumeratorDecorator::setValue(int value)
 
 QJsonValue EnumeratorDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(m_implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_d->value));
 }
 
 void EnumeratorDecorator::update(const QJsonObject& jsonObject)

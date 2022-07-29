@@ -4,13 +4,16 @@
 #include <QString>
 #include "DataDecorator.h"
 
+class StringDecoratorPrivate;
+
 class JSONAUTOSHARED_EXPORT StringDecorator : public DataDecorator
 {
     Q_OBJECT
     //QML访问的属性
     Q_PROPERTY( QString ui_value READ value WRITE setValue NOTIFY valueChanged )
 public:
-    StringDecorator(Entity* parentEntity, const QString& key, const QString& label = "", const QString& value = "");
+    explicit StringDecorator(Entity* parentEntity, const QString& key, const QString& label = "", const QString& value = "");
+    ~StringDecorator();
 
     //修改和获取字符串封装类型中的原始数据
     StringDecorator& setValue(const QString& value);
@@ -25,8 +28,7 @@ signals:
     void valueChanged();
 
 private:
-    class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
+    StringDecoratorPrivate *m_d;
 };
 
 #endif // STRINGDECORATOR_H

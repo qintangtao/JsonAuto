@@ -129,14 +129,15 @@ T* JsontoEntity(const QString &json)
 
 QString JSONAUTOSHARED_EXPORT EntitytoJson(Entity *entity);
 
+class EntityPrivate;
 
 class  JSONAUTOSHARED_EXPORT Entity : public QObject
 {
     Q_OBJECT
 
 public:
-    Entity(QObject* parent = nullptr, const QString& key = "SomeEntityKey");
-    Entity(QObject* parent, const QString& key, const QJsonObject& jsonObject);
+    explicit Entity(QObject* parent = nullptr, const QString& key = "SomeEntityKey");
+    explicit Entity(QObject* parent, const QString& key, const QJsonObject& jsonObject);
     virtual ~Entity();
 
 public:
@@ -168,8 +169,7 @@ protected:
     DataDecorator* addDataItem(DataDecorator* dataDecorator);
 
 protected:
-    class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
+    EntityPrivate *m_d;
 };
 
 #endif // ENTITY_H

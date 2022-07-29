@@ -1,10 +1,12 @@
 #include "BoolDecorator.h"
 #include <QVariant>
 
-class BoolDecorator::Implementation
+
+
+class BoolDecoratorPrivate
 {
 public:
-    Implementation(BoolDecorator* _decorator, bool _value)
+    BoolDecoratorPrivate(BoolDecorator* _decorator, bool _value)
         : decorator(_decorator)
         , value(_value)
     {
@@ -16,20 +18,27 @@ public:
 
 BoolDecorator::BoolDecorator(Entity* parentEntity, const QString& key, const QString& label, bool value)
     :  DataDecorator(parentEntity, key, label)
+    , m_d(new BoolDecoratorPrivate(this, value))
 {
-    m_implementation.reset(new Implementation(this, value));
+
+}
+
+BoolDecorator::~BoolDecorator()
+{
+    if (m_d)
+        delete m_d;
 }
 
 bool BoolDecorator::value() const
 {
-    return m_implementation->value;
+    return m_d->value;
 }
 
 BoolDecorator& BoolDecorator::setValue(bool value)
 {
-    if(value != m_implementation->value) {
+    if(value != m_d->value) {
         // ...Validation here if required...
-        m_implementation->value = value;
+        m_d->value = value;
         emit valueChanged();
     }
 
@@ -38,7 +47,7 @@ BoolDecorator& BoolDecorator::setValue(bool value)
 
 QJsonValue BoolDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(m_implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_d->value));
 }
 
 void BoolDecorator::update(const QJsonObject& jsonObject)

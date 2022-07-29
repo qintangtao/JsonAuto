@@ -1,10 +1,10 @@
 #include "StringDecorator.h"
 #include <QVariant>
 
-class StringDecorator::Implementation
+class StringDecoratorPrivate
 {
 public:
-    Implementation(StringDecorator* _decorator, const QString& _value)
+    StringDecoratorPrivate(StringDecorator* _decorator, const QString& _value)
         : decorator(_decorator)
         , value(_value)
     {
@@ -16,19 +16,26 @@ public:
 
 StringDecorator::StringDecorator(Entity* parentEntity, const QString& key, const QString& label, const QString& value)
         :   DataDecorator(parentEntity, key, label)
+        ,   m_d(new StringDecoratorPrivate(this, value))
 {
-    m_implementation.reset(new Implementation(this, value));
+
+}
+
+StringDecorator::~StringDecorator()
+{
+    if (m_d)
+        delete m_d;
 }
 
 const QString& StringDecorator::value() const
 {
-    return m_implementation->value;
+    return m_d->value;
 }
 
 StringDecorator& StringDecorator::setValue(const QString& value)
 {
-    if(value != m_implementation->value) {
-        m_implementation->value = value;
+    if(value != m_d->value) {
+        m_d->value = value;
         emit valueChanged();
     }
     return *this;
@@ -36,7 +43,7 @@ StringDecorator& StringDecorator::setValue(const QString& value)
 
 QJsonValue StringDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(m_implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_d->value));
 }
 
 void StringDecorator::update(const QJsonObject& _jsonObject)

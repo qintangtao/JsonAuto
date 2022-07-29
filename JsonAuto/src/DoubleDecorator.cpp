@@ -1,10 +1,10 @@
 #include "DoubleDecorator.h"
 #include <QVariant>
 
-class DoubleDecorator::Implementation
+class DoubleDecoratorPrivate
 {
 public:
-    Implementation(DoubleDecorator* _decorator, double _value)
+    DoubleDecoratorPrivate(DoubleDecorator* _decorator, double _value)
         : decorator(_decorator)
         , value(_value)
     {
@@ -16,20 +16,27 @@ public:
 
 DoubleDecorator::DoubleDecorator(Entity* parentEntity, const QString& key, const QString& label, double value)
     :  DataDecorator(parentEntity, key, label)  
+    , m_d(new DoubleDecoratorPrivate(this, value))
 {
-    m_implementation.reset(new Implementation(this, value));
+
+}
+
+DoubleDecorator::~DoubleDecorator()
+{
+    if (m_d)
+        delete m_d;
 }
 
 double DoubleDecorator::value() const
 {
-    return m_implementation->value;
+    return m_d->value;
 }
 
 DoubleDecorator& DoubleDecorator::setValue(double value)
 {
-    if(value != m_implementation->value) {
+    if(value != m_d->value) {
         // ...Validation here if required...
-        m_implementation->value = value;
+        m_d->value = value;
         emit valueChanged();
     }
 
@@ -38,7 +45,7 @@ DoubleDecorator& DoubleDecorator::setValue(double value)
 
 QJsonValue DoubleDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(m_implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_d->value));
 }
 
 void DoubleDecorator::update(const QJsonObject& jsonObject)

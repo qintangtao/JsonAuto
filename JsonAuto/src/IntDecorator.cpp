@@ -1,10 +1,10 @@
 #include "IntDecorator.h"
 #include <QVariant>
 
-class IntDecorator::Implementation
+class IntDecoratorPrivate
 {
 public:
-    Implementation(IntDecorator* _decorator, int _value)
+    IntDecoratorPrivate(IntDecorator* _decorator, int _value)
         : decorator(_decorator)
         , value(_value)
     {
@@ -16,20 +16,27 @@ public:
 
 IntDecorator::IntDecorator(Entity* parentEntity, const QString& key, const QString& label, int value)
     :  DataDecorator(parentEntity, key, label)  
+    ,  m_d(new IntDecoratorPrivate(this, value))
 {
-    m_implementation.reset(new Implementation(this, value));
+
+}
+
+IntDecorator::~IntDecorator()
+{
+    if (m_d)
+        delete m_d;
 }
 
 int IntDecorator::value() const
 {
-    return m_implementation->value;
+    return m_d->value;
 }
 
 IntDecorator& IntDecorator::setValue(int value)
 {
-    if(value != m_implementation->value) {
+    if(value != m_d->value) {
         // ...Validation here if required...
-        m_implementation->value = value;
+        m_d->value = value;
         emit valueChanged();
     }
 
@@ -38,7 +45,7 @@ IntDecorator& IntDecorator::setValue(int value)
 
 QJsonValue IntDecorator::jsonValue() const
 {
-    return QJsonValue::fromVariant(QVariant(m_implementation->value));
+    return QJsonValue::fromVariant(QVariant(m_d->value));
 }
 
 void IntDecorator::update(const QJsonObject& jsonObject)

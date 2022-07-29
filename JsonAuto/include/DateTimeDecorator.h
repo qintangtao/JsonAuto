@@ -4,6 +4,8 @@
 #include <QDateTime>
 #include "DataDecorator.h"
 
+class DateTimeDecoratorPrivate;
+
 class JSONAUTOSHARED_EXPORT DateTimeDecorator : public DataDecorator
 {
      Q_OBJECT
@@ -14,7 +16,8 @@ class JSONAUTOSHARED_EXPORT DateTimeDecorator : public DataDecorator
     Q_PROPERTY( QString ui_prettyString READ toPrettyString NOTIFY valueChanged )
     Q_PROPERTY( QDateTime ui_value READ value WRITE setValue NOTIFY valueChanged )
 public:
-    DateTimeDecorator(Entity* parentEntity, const QString& key, const QString& label = "", const QDateTime& value = QDateTime());
+    explicit DateTimeDecorator(Entity* parentEntity, const QString& key, const QString& label = "", const QDateTime& value = QDateTime());
+    ~DateTimeDecorator();
 
     const QDateTime& value() const;
     DateTimeDecorator& setValue(const QDateTime& value);
@@ -33,8 +36,7 @@ signals:
     void valueChanged();
 
 private:
-    class Implementation;
-    QScopedPointer<Implementation, QScopedPointerDeleter2<Implementation>> m_implementation;
+    DateTimeDecoratorPrivate *m_d;
 };
 
 #endif // DATETIMEDECORATOR_H
