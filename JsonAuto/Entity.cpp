@@ -1,6 +1,20 @@
 #include "Entity.h"
 #include <map>
+#include <QJsonDocument>
 #include <QJsonArray>
+
+
+
+QString EntitytoJson(Entity *entity)
+{
+    QJsonDocument document;
+    QJsonObject jsonobject;
+
+    jsonobject = entity->toJson();
+    document.setObject(jsonobject);
+
+    return QString::fromLocal8Bit( document.toJson(QJsonDocument::Compact) );
+}
 
 class Entity::Implementation
 {

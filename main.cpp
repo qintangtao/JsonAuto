@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QTextStream>
 
+#include "Entity.h"
 #include "Address.h"
 #include "Customer.h"
 
@@ -15,7 +16,6 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
     //将json结构转换成一个数据类
-#if  1
     QString json = "{\"date\":\"2022-07-26T21:50:49\",\
                               \"distance\":128.5,\
                               \"valide\":true, \
@@ -34,21 +34,9 @@ int main(int argc, char *argv[])
                                     \"postcode\":\"56788\",\
                                     \"street\":\"光明街道\"}\
                         }";
-    QJsonParseError json_error;
-    QJsonDocument parse_doucment = QJsonDocument::fromJson(json.toLocal8Bit(), &json_error);
-    if(json_error.error != QJsonParseError::NoError) {
-        qDebug() << json_error.errorString();
+    Customer* customer = JsontoEntity<Customer>(json);
+    if (customer == NULL)
         return 0;
-    }
-
-    if( !parse_doucment.isObject() )
-        return 0;
-
-    QJsonObject customer_json = parse_doucment.object();
-#else
-    QJsonObject customer_json;
-#endif
-    Customer* customer = new Customer(NULL, customer_json);
 
     qDebug() << customer->toString() ;
     qDebug() << customer->defaultAddr()->toString() ;
@@ -74,42 +62,21 @@ int main(int argc, char *argv[])
     customer->setName("小明");
     customer->setAge(23);
 
-#if 1
     customer->defaultAddr()->setCity("北京市");
     customer->defaultAddr()->setStreet("光明街道");
     customer->defaultAddr()->setBuilding("6号楼");
     customer->defaultAddr()->setPostcode("56788");
-#else
-    customer->defaultAddr->city->setValue("北京市");
-    customer->defaultAddr->street->setValue("光明街道");
-    customer->defaultAddr->building->setValue("6号楼");
-    customer->defaultAddr->postcode->setValue("56788");
-#endif
 
     //添加新地址
     Address* new_addr = new Address();
-#if 1
     new_addr->setCity("北京市");
     new_addr->setStreet("光明街道");
     new_addr->setBuilding("6号楼");
     new_addr->setPostcode("56788");
-#else
-    new_addr->city->setValue("西河市");
-    new_addr->street->setValue("细节街道");
-    new_addr->building->setValue("6号楼");
-    new_addr->postcode->setValue("56789");
-#endif
     customer->addresses()->addData(new_addr);
 
     //将数据类型转换成json数据结构
-    QJsonObject json_object = customer->toJson();
-
-    QJsonDocument document;
-    document.setObject(json_object);
-    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
-
-   QString json2= QString::fromLocal8Bit( byte_array );
-
+   QString json2= EntitytoJson(customer);
    qDebug() << json2 ;
 
    {

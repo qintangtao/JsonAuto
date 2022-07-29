@@ -2,6 +2,8 @@
 #define ENTITY_H
 
 #include <QObject>
+#include <QJsonDocument>
+#include <QJsonParseError>
 #include "DataDecorator.h"
 #include "IntDecorator.h"
 #include "DoubleDecorator.h"
@@ -102,6 +104,28 @@
 #define DATETIMEGDECORATOR_METHOD(PROPERTYNAME, SETNAME, GETNAME) \
     DATETIMEGDECORATOR_SETMETHOD(PROPERTYNAME, SETNAME) \
     DATETIMEGDECORATOR_GETMETHOD(PROPERTYNAME, GETNAME)
+
+
+template <class T>
+T* JsontoEntity(const QString &json)
+{
+    QJsonParseError jsonerror;
+    QJsonDocument doucment;
+
+    doucment = QJsonDocument::fromJson(json.toLocal8Bit(), &jsonerror);
+
+    if(jsonerror.error != QJsonParseError::NoError) {
+        return NULL;
+    }
+
+    if( !doucment.isObject() ) {
+        return NULL;
+    }
+
+    return new T(NULL, doucment.object());
+}
+
+QString EntitytoJson(Entity *entity);
 
 
 class Entity : public QObject
