@@ -22,6 +22,8 @@ contains(DEFINES, JSONAUTO_SOURCE) {
     include($$PWD/JsonAuto/jsonauto.pri)
 } else {
 
+    INCLUDEPATH += $$PWD/JsonAuto/include
+
     CONFIG(debug,debug|release){
         LIBS += \
             -L$$PWD/JsonAuto/lib/Debug -lJsonAuto
@@ -31,7 +33,6 @@ contains(DEFINES, JSONAUTO_SOURCE) {
             -L$$PWD/JsonAuto/lib/Release -lJsonAuto
     }
 
-    INCLUDEPATH += $$PWD/JsonAuto
 }
 
 

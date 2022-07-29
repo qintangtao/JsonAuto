@@ -1,31 +1,32 @@
 
-INCLUDEPATH += $$PWD
+
+INCLUDEPATH += $$PWD/include
 
 #DEPENDPATH += $$PWD
 
 HEADERS += \
-    $$PWD/DataDecorator.h \
-    $$PWD/StringDecorator.h \
-    $$PWD/IntDecorator.h \
-    $$PWD/DoubleDecorator.h \
-    $$PWD/BoolDecorator.h  \
-    $$PWD/DateTimeDecorator.h \
-    $$PWD/EnumeratorDecorator.h \
-    $$PWD/Entity.h \
-    $$PWD/EntityCollection.h \
-    $$PWD/CollectionObject.h \
-    $$PWD/DataDecoratorCollection.h \
-    $$PWD/JsonAuto.h
+    $$PWD/include/DataDecorator.h \
+    $$PWD/include/StringDecorator.h \
+    $$PWD/include/IntDecorator.h \
+    $$PWD/include/DoubleDecorator.h \
+    $$PWD/include/BoolDecorator.h  \
+    $$PWD/include/DateTimeDecorator.h \
+    $$PWD/include/EnumeratorDecorator.h \
+    $$PWD/include/Entity.h \
+    $$PWD/include/EntityCollection.h \
+    $$PWD/include/CollectionObject.h \
+    $$PWD/include/DataDecoratorCollection.h \
+    $$PWD/include/JsonAuto.h
 
 SOURCES += \
-    $$PWD/DataDecorator.cpp \
-    $$PWD/StringDecorator.cpp \
-    $$PWD/IntDecorator.cpp \
-    $$PWD/DoubleDecorator.cpp \
-    $$PWD/BoolDecorator.cpp \
-    $$PWD/DateTimeDecorator.cpp \
-    $$PWD/EnumeratorDecorator.cpp \
-    $$PWD/Entity.cpp \
-    $$PWD/CollectionObject.cpp
+    $$PWD/src/DataDecorator.cpp \
+    $$PWD/src/StringDecorator.cpp \
+    $$PWD/src/IntDecorator.cpp \
+    $$PWD/src/DoubleDecorator.cpp \
+    $$PWD/src/BoolDecorator.cpp \
+    $$PWD/src/DateTimeDecorator.cpp \
+    $$PWD/src/EnumeratorDecorator.cpp \
+    $$PWD/src/Entity.cpp \
+    $$PWD/src/CollectionObject.cpp
 
 QT += core
