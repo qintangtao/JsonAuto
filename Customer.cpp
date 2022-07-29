@@ -3,7 +3,6 @@
 Customer::Customer(QObject* parent)
     : Entity(parent, "Customer")
 {
-#if 1
     m_valide = ADD_BOOL_DATAITEM("valide", QObject::tr("有效"));
     m_distance = ADD_DOUBLE_DATAITEM("distance", QObject::tr("距离"));
     m_date = ADD_DATETIME_DATAITEM("date", QObject::tr("日期"));
@@ -12,13 +11,6 @@ Customer::Customer(QObject* parent)
     m_defaultAddr = ADD_CHILD(Address, "defaultAddress");
     m_addresses = ADD_CHILD_ENTITYCOLLECTION(Address, "address");
     m_orders = ADD_CHILD_DATADECORATORCOLLECTION(IntDecorator, "orders")
-#else
-    m_age = static_cast<IntDecorator*>(addDataItem(new IntDecorator(this, "age", "年龄")));
-    m_name = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "name", "姓名")));
-    m_defaultAddr = static_cast<Address*>(addChild(new Address(this), "defaultAddress"));
-    m_addresses = static_cast<EntityCollection<Address>*>(addChildCollection(new EntityCollection<Address>(this, "address")));
-    m_orders = static_cast<BasicCollection<int>*>(addChildCollection(new BasicCollection<int>(this, "orders")));
-#endif
 }
 
 Customer::Customer(QObject* parent, const QJsonObject& json)

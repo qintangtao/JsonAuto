@@ -3,17 +3,10 @@
 Address::Address(QObject* parent)
         : Entity(parent, "address")
 {
-#if 1
     m_building = ADD_STRING_DATAITEM("building", QObject::tr("楼栋"));
     m_street = ADD_STRING_DATAITEM("street", QObject::tr("街道"));
     m_city = ADD_STRING_DATAITEM( "city", QObject::tr("城市"));
     m_postcode = ADD_STRING_DATAITEM("postcode", QObject::tr("编码"));
-#else
-    building = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "building", "Building")));
-    street = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "street", "Street")));
-    city = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "city", "City")));
-    postcode = static_cast<StringDecorator*>(addDataItem(new StringDecorator(this, "postcode", "Post Code")));
-#endif
 }
 
 Address::Address(QObject* parent, const QJsonObject& json)

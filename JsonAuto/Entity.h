@@ -13,6 +13,7 @@
 #include "EntityCollection.h"
 #include "DataDecoratorCollection.h"
 
+// add decorator
 #define ADD_DATAITEM(decorator, key, label) \
                 static_cast<decorator*>(addDataItem(new decorator(this, key, label)));
 
