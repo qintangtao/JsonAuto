@@ -4,7 +4,7 @@
 #include <map>
 #include "DataDecorator.h"
 
-class EnumeratorDecorator : public DataDecorator
+class JSONAUTOSHARED_EXPORT EnumeratorDecorator : public DataDecorator
 {
      Q_OBJECT
     //枚举属性值

@@ -3,7 +3,7 @@
 
 #include "DataDecorator.h"
 
-class IntDecorator : public DataDecorator
+class JSONAUTOSHARED_EXPORT  IntDecorator : public DataDecorator
 {
     Q_OBJECT
     // QML访问的接口

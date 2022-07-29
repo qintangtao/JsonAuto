@@ -4,7 +4,7 @@
 #include <QString>
 #include "DataDecorator.h"
 
-class StringDecorator : public DataDecorator
+class JSONAUTOSHARED_EXPORT StringDecorator : public DataDecorator
 {
     Q_OBJECT
     //QML访问的属性

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QJsonDocument>
 #include <QJsonParseError>
+#include "JsonAuto.h"
 #include "DataDecorator.h"
 #include "IntDecorator.h"
 #include "DoubleDecorator.h"
@@ -126,10 +127,10 @@ T* JsontoEntity(const QString &json)
     return new T(NULL, doucment.object());
 }
 
-QString EntitytoJson(Entity *entity);
+QString JSONAUTOSHARED_EXPORT EntitytoJson(Entity *entity);
 
 
-class Entity : public QObject
+class  JSONAUTOSHARED_EXPORT Entity : public QObject
 {
     Q_OBJECT
 

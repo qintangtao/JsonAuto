@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include "DataDecorator.h"
 
-class DateTimeDecorator : public DataDecorator
+class JSONAUTOSHARED_EXPORT DateTimeDecorator : public DataDecorator
 {
      Q_OBJECT
     //QML中访问各种日期的格式

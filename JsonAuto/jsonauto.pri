@@ -14,7 +14,8 @@ HEADERS += \
     $$PWD/Entity.h \
     $$PWD/EntityCollection.h \
     $$PWD/CollectionObject.h \
-    $$PWD/DataDecoratorCollection.h
+    $$PWD/DataDecoratorCollection.h \
+    $$PWD/JsonAuto.h
 
 SOURCES += \
     $$PWD/DataDecorator.cpp \

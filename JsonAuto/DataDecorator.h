@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QScopedPointer>
+#include "JsonAuto.h"
 
 class Entity;
 class DataDecoratorCollectionBase;
@@ -18,7 +19,7 @@ struct QScopedPointerDeleter2
     }
 };
 
-class DataDecorator : public QObject
+class JSONAUTOSHARED_EXPORT DataDecorator : public QObject
 {
     Q_OBJECT
     //导出QML中需要访问属性

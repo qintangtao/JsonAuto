@@ -1,9 +1,9 @@
 QT -= gui
 
-CONFIG += c++11 console
-CONFIG -= app_bundle
+TARGET = JsonAuto
+TEMPLATE = lib
 
-DEFINES += JSONAUTO_SOURCE
+DEFINES += JSONAUTO_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -18,19 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 include($$PWD/JsonAuto/jsonauto.pri)
 
-SOURCES += \
-        main.cpp \
-    Address.cpp \
-    Customer.cpp
-
-
-HEADERS += \
-    Address.h \
-    Customer.h
-
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}
 
