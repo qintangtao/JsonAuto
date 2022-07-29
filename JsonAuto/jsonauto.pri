@@ -25,6 +25,7 @@ SOURCES += \
     $$PWD/BoolDecorator.cpp \
     $$PWD/DateTimeDecorator.cpp \
     $$PWD/EnumeratorDecorator.cpp \
-    $$PWD/Entity.cpp
+    $$PWD/Entity.cpp \
+    $$PWD/CollectionObject.cpp
 
 QT += core
