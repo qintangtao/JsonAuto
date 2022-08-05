@@ -27,12 +27,7 @@ int main(int argc, char *argv[])
                                     \"city\":\"西河市\",\
                                     \"postcode\":\"56789\",\
                                     \"street\":\"细节街道\"}\
-                            ],\
-                            \"defaultAddress\":{ \
-                                    \"building\":\"6号楼\",\
-                                    \"city\":\"北京市\",\
-                                    \"postcode\":\"56788\",\
-                                    \"street\":\"光明街道\"}\
+                            ]\
                         }";
     Customer* customer = JsontoEntity<Customer>(json);
     if (customer == NULL)
@@ -50,10 +45,10 @@ int main(int argc, char *argv[])
 
     qDebug() << "=========orders=========";
     const QList<IntDecorator*>& lstOrders = customer->orders()->datas();
-     foreach(IntDecorator* order, lstOrders)
-     {
-         qDebug() << order->value();
-     }
+    foreach(IntDecorator* order, lstOrders)
+    {
+        qDebug() << order->value();
+    }
 
     //修改数据
     customer->setValide(false);

@@ -15,8 +15,8 @@
 #include "DataDecoratorCollection.h"
 
 // add decorator
-#define ADD_DATAITEM(decorator, key, label) \
-                static_cast<decorator*>(addDataItem(new decorator(this, key, label)));
+#define ADD_DATAITEM(cls, key, label) \
+                static_cast<cls*>(addDataItem(new cls(this, key, label)));
 
 #define ADD_STRING_DATAITEM( key, label) \
                 ADD_DATAITEM(StringDecorator, key, label)
@@ -161,9 +161,9 @@ signals:
 protected:
     //添加包含的信信息体
     Entity* addChild(Entity* entity, const QString& key);
-    //添加包含的信息实体列表
+    //添加实体列表
     EntityCollectionBase* addChildCollection(EntityCollectionBase* entityCollection);
-    // 基本类型列表
+    // 添加基本类型列表
     DataDecoratorCollectionBase* addChildCollection(DataDecoratorCollectionBase* dataCollection);
     //添加子属性
     DataDecorator* addDataItem(DataDecorator* dataDecorator);

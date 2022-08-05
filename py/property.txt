@@ -1,0 +1,18 @@
+XXMVideoMatrixs
+entity-list vmxs XXMVideoMatrix
+
+XXMUser
+int id
+int age
+string name
+bool big_size
+entity defaultAddres XXMAddress
+entity-list address XXMAddress
+data-list sizes int
+
+XXMAddress
+int id
+int age
+string name
+bool big_size
+

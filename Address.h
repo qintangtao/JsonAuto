@@ -4,8 +4,6 @@
 #include "Entity.h"
 #include "StringDecorator.h"
 
-
-
 class Address : public Entity
 {
     Q_OBJECT
