@@ -132,6 +132,9 @@ def read_property(filename):
 				methodList += lines2[1]
 				methodList += ')\n\t'
 
+				addpropertyList += 'm_'
+				addpropertyList += lines2[1]
+				addpropertyList += ' = '
 				addpropertyList += getAdd(lines2[0])
 				addpropertyList += '("'
 				addpropertyList += lines2[1]
@@ -159,6 +162,9 @@ def read_property(filename):
 				methodList += lines2[1]
 				methodList += '; }\n\t'
 
+				addpropertyList += 'm_'
+				addpropertyList += lines2[1]
+				addpropertyList += ' = '
 				addpropertyList += getAdd(lines2[0])
 				addpropertyList += '('
 				if lines2[0] == 'data-list':

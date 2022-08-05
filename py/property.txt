@@ -1,3 +1,85 @@
+XXMPreplanLayoutInfo
+string posmarkid
+string layoutname
+string posmarkdesc
+int refrows
+int refcols
+
+XXMPreplanInputDev
+entity-list videoviews XXMVideoView
+entity position XXMRectF
+entity cutratio XXMRectF
+entity grids XXMRect
+string comboguid
+string windowid
+int referid
+int opttype
+int order
+int mediaType
+int audioEnable
+int volume
+
+XXMPreplan
+string preplanid
+string name
+entity layoutinfo XXMPreplanLayoutInfo
+entity-list inputdevs XXMPreplanInputDev
+
+XXMPreplans
+string vmxid
+entity-list preplan XXMPreplan
+
+XXMPreplanRequest
+string vmxid
+string name
+string preplanid 
+int modify
+int auto
+int save_audio
+
+XXMPreplanCommon
+string vmxid
+string preplanid 
+
+XXMCreateVideoViewResponse
+string vmxid
+int referid
+
+XXMCreateVideoViewRequest
+string vmxid	
+string posmarkid
+string comboguid
+string windowid
+int opttype
+int overlaymode
+int referid
+int order
+entity position XXMRectF	
+entity cutratio XXMRectF
+entity grids XXMRect
+entity videoviews XXMVideoViews
+entity winrange XXMWinrange
+
+XXMVideoView
+string guid
+
+XXMVideoViews
+entity-list videoviews XXMVideoView
+
+XXMWinrange
+int index
+int row
+int col
+
+XXMRect
+int x
+int y
+int w
+int h
+
+XXMVideoMatrixRequest
+string vmxid
+
 XXMVideoMatrixs
 entity-list vmxs XXMVideoMatrix
 

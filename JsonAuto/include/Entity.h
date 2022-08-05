@@ -158,7 +158,7 @@ signals:
     //包含的属性发生变化
     void dataDecoratorsChanged();
 
-protected:
+public:
     //添加包含的信信息体
     Entity* addChild(Entity* entity, const QString& key);
     //添加实体列表

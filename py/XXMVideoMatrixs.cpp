@@ -3,7 +3,7 @@
 XXMVideoMatrixs::XXMVideoMatrixs(QObject* parent)
     : Entity(parent, "XXMVideoMatrixs")
 {
-    ADD_CHILD_ENTITYCOLLECTION(XXMVideoMatrix, "vmxs")
+    m_vmxs = ADD_CHILD_ENTITYCOLLECTION(XXMVideoMatrix, "vmxs")
 	
 }
 
