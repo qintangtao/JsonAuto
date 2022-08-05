@@ -57,14 +57,11 @@ int order
 entity position XXMRectF	
 entity cutratio XXMRectF
 entity grids XXMRect
-entity videoviews XXMVideoViews
 entity winrange XXMWinrange
+entity-list videoviews XXMVideoView
 
 XXMVideoView
 string guid
-
-XXMVideoViews
-entity-list videoviews XXMVideoView
 
 XXMWinrange
 int index
