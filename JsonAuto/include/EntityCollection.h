@@ -33,6 +33,9 @@ public:
     template <class T>
     T* addData(T* data);
 
+    template <class T>
+    void removeData(T* data);
+
 private:
     QString m_key;
 };
@@ -92,6 +95,13 @@ public:
           return data;
       }
 
+      void removeData(T* data)
+      {
+          if(m_collection.contains(data)) {
+              m_collection.removeOne(data);
+          }
+      }
+
 private:
     QList<T*> m_collection;
 };
@@ -108,5 +118,10 @@ T* EntityCollectionBase::addData(T* data)
     return dynamic_cast<const EntityCollection<T>&>(*this).addData(data);
 }
 
+template <class T>
+void EntityCollectionBase::removeData(T* data)
+{
+    return dynamic_cast<const EntityCollection<T>&>(*this).removeData(data);
+}
 
 #endif // ENTITYCOLLECTION_H

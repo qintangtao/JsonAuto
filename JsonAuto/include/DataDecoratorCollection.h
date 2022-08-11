@@ -33,6 +33,9 @@ public:
     template <class T>
     T* addData(T* decorator);
 
+    template <class T>
+    void removeData(T* decorator);
+
 private:
     QString m_key;
 };
@@ -54,10 +57,10 @@ public:
     //清空列表
       void clear() override
       {
-          for(auto data : collection) {
+          for(auto data : m_collection) {
               data->deleteLater();
           }
-          collection.clear();
+          m_collection.clear();
       }
       //更新列表
       void update(const QJsonArray& jsonArray) override
@@ -74,7 +77,7 @@ public:
       std::vector<DataDecorator*> baseDatas() override
       {
           std::vector<DataDecorator*> returnValue;
-          for(T* data : collection) {
+          for(T* data : m_collection) {
                 returnValue.push_back(data);
           }
           return returnValue;
@@ -83,21 +86,28 @@ public:
       //获取列表的引用
       const QList<T*>& datas() const
       {
-          return collection;
+          return m_collection;
       }
 
       //添加新的信息实体
       T* addData(T* data)
       {
-          if(!collection.contains(data)) {
-              collection.append(data);
+          if(!m_collection.contains(data)) {
+              m_collection.append(data);
               CollectionObject::collectionChanged();
           }
           return data;
       }
 
+      void removeData(T* decorator)
+      {
+          if(m_collection.contains(decorator)) {
+              m_collection.removeOne(decorator);
+          }
+      }
+
 private:
-    QList<T*> collection;
+    QList<T*> m_collection;
 };
 
 
@@ -111,6 +121,12 @@ template <class T>
 T* DataDecoratorCollectionBase::addData(T* data)
 {
     return dynamic_cast<const DataDecoratorCollection<T>&>(*this).addData(data);
+}
+
+template <class T>
+void DataDecoratorCollectionBase::removeData(T* data)
+{
+    return dynamic_cast<const DataDecoratorCollection<T>&>(*this).removeData(data);
 }
 
 #endif // DECORATORCOLLECTION_H

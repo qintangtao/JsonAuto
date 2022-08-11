@@ -1,3 +1,7 @@
+XXMSyncVideoMatrix
+string vmxid
+entity-list syncvideoviews XXMCreateVideoViewRequest
+
 XXMPreplanLayoutInfo
 string posmarkid
 string layoutname
